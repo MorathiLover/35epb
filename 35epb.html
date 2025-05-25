@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>3.5e Point Buy Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .total {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .remaining {
+            color: green;
+        }
+        .over {
+            color: red;
+        }
+        select {
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>3.5e Point Buy Calculator</h1>
+    <p>Total points: 32</p>
+    
+    <table>
+        <tr>
+            <th>Ability</th>
+            <th>Score</th>
+            <th>Cost</th>
+        </tr>
+        <tr>
+            <td>Strength</td>
+            <td>
+                <select id="str" onchange="calculate()">
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                </select>
+            </td>
+            <td id="strCost">0</td>
+        </tr>
+        <tr>
+            <td>Dexterity</td>
+            <td>
+                <select id="dex" onchange="calculate()">
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                </select>
+            </td>
+            <td id="dexCost">0</td>
+        </tr>
+        <tr>
+            <td>Constitution</td>
+            <td>
+                <select id="con" onchange="calculate()">
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                </select>
+            </td>
+            <td id="conCost">0</td>
+        </tr>
+        <tr>
+            <td>Intelligence</td>
+            <td>
+                <select id="int" onchange="calculate()">
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                </select>
+            </td>
+            <td id="intCost">0</td>
+        </tr>
+        <tr>
+            <td>Wisdom</td>
+            <td>
+                <select id="wis" onchange="calculate()">
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                </select>
+            </td>
+            <td id="wisCost">0</td>
+        </tr>
+        <tr>
+            <td>Charisma</td>
+            <td>
+                <select id="cha" onchange="calculate()">
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                </select>
+            </td>
+            <td id="chaCost">0</td>
+        </tr>
+    </table>
+    
+    <div class="total">Total points spent: <span id="totalPoints">0</span>/32</div>
+    <div id="remainingText" class="remaining">Points remaining: 32</div>
+    
+    <script>
+        const pointCosts = {
+            8: 0,
+            9: 1,
+            10: 2,
+            11: 3,
+            12: 4,
+            13: 5,
+            14: 6,
+            15: 8,
+            16: 10,
+            17: 13,
+            18: 16
+        };
+        
+        function calculate() {
+            let total = 0;
+            
+            // Calculate cost for each ability
+            const str = parseInt(document.getElementById("str").value);
+            const strCost = pointCosts[str];
+            document.getElementById("strCost").textContent = strCost;
+            total += strCost;
+            
+            const dex = parseInt(document.getElementById("dex").value);
+            const dexCost = pointCosts[dex];
+            document.getElementById("dexCost").textContent = dexCost;
+            total += dexCost;
+            
+            const con = parseInt(document.getElementById("con").value);
+            const conCost = pointCosts[con];
+            document.getElementById("conCost").textContent = conCost;
+            total += conCost;
+            
+            const int = parseInt(document.getElementById("int").value);
+            const intCost = pointCosts[int];
+            document.getElementById("intCost").textContent = intCost;
+            total += intCost;
+            
+            const wis = parseInt(document.getElementById("wis").value);
+            const wisCost = pointCosts[wis];
+            document.getElementById("wisCost").textContent = wisCost;
+            total += wisCost;
+            
+            const cha = parseInt(document.getElementById("cha").value);
+            const chaCost = pointCosts[cha];
+            document.getElementById("chaCost").textContent = chaCost;
+            total += chaCost;
+            
+            // Update total display
+            document.getElementById("totalPoints").textContent = total;
+            
+            // Update remaining points display
+            const remaining = 32 - total;
+            const remainingText = document.getElementById("remainingText");
+            remainingText.textContent = `Points remaining: ${remaining}`;
+            
+            if (remaining < 0) {
+                remainingText.className = "over";
+            } else {
+                remainingText.className = "remaining";
+            }
+        }
+        
+        // Initialize calculator
+        calculate();
+    </script>
+</body>
+</html>
